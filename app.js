@@ -1,12 +1,29 @@
 const express = require('express');
-
+const fs = require('fs');
+const router = express.Router();
 const app = express();
 
 const PORT = process.env.PORT || 4000;
 
-app.use('/', (req, res) => {
-	res.send('Hello World');
+router.get('/', async (req, res) => {
+	res.send('Get');
 });
+
+router.param('id', (req, res, next, value) => {
+	console.log(value, 'qweqweqew');
+	req.params.id = value + 'zxcvzxcvzxcv12321321123312';
+	next();
+});
+
+router.get('/:id', (req, res) => {
+	console.log(req.params.id);
+	res.send('Get');
+});
+app.post('/', async (req, res) => {
+	res.send('Post');
+});
+
+app.use('/user', router);
 
 app.listen(PORT, () => {
 	console.log(`Server is listening on port ${PORT}`);
